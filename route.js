@@ -12,10 +12,6 @@ const router = express.Router();
 
 const db = 'db.json';
 
-// const { readFileSync } = require('fs');
-// var path = require('path');
-// const db = readFileSync(path.join('./db.json'));
-
 router.get('/', (req, res, next) => {
 	get(db, function (data) {
 		res.status(200).json({
