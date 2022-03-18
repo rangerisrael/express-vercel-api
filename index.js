@@ -1,7 +1,6 @@
 import express from 'express';
 import { services } from './api.js';
 
-const db = 'db.json';
 const app = express();
 
 app.use(express.json({ extended: false }));
@@ -14,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/services', (req, res, next) => {
-	services.get(db, function (data) {
+	services.get(function (data) {
 		res.status(200).json({
 			status: 200,
 			statusText: 'OK',
@@ -30,7 +29,7 @@ app.get('/filter', (req, res, next) => {
 		name: req.query.name,
 	};
 
-	services.filterServicesByQuery(db, searchObject, function (data) {
+	services.filterServicesByQuery(searchObject, function (data) {
 		res.status(200).json({
 			status: 200,
 			statusText: 'OK',
@@ -41,7 +40,7 @@ app.get('/filter', (req, res, next) => {
 });
 
 app.get('/:id', (req, res, next) => {
-	services.getByID(db, req.params.id, function (data) {
+	services.getByID(req.params.id, function (data) {
 		if (!data) {
 			res.status(404).send({
 				status: 404,
@@ -63,7 +62,7 @@ app.get('/:id', (req, res, next) => {
 });
 
 app.post('/create', (req, res, next) => {
-	services.get(db, function (data) {
+	services.get(function (data) {
 		let _record = data.filter((d) => d.id);
 		req.body.id = _record.length + 1;
 
@@ -82,7 +81,6 @@ app.post('/create', (req, res, next) => {
 		}
 
 		services.createServices(
-			db,
 			req.body,
 			function (data) {
 				res.status(201).json({
@@ -100,7 +98,7 @@ app.post('/create', (req, res, next) => {
 });
 
 app.put('/update/:id', (req, res, next) => {
-	services.getByID(db, req.params.id, function (data) {
+	services.getByID(req.params.id, function (data) {
 		if (!data) {
 			res.status(404).send({
 				status: 404,
@@ -127,7 +125,7 @@ app.put('/update/:id', (req, res, next) => {
 			});
 		}
 
-		services.updateServices(db, req.body, req.params.id, function (data) {
+		services.updateServices(req.body, req.params.id, function (data) {
 			res.status(201).json({
 				status: 201,
 				statusText: 'Accepted',
@@ -139,7 +137,7 @@ app.put('/update/:id', (req, res, next) => {
 });
 
 app.patch('/update/:id', (req, res, next) => {
-	services.getByID(db, req.params.id, function (data) {
+	services.getByID(req.params.id, function (data) {
 		if (!data) {
 			res.status(404).send({
 				status: 404,
@@ -166,7 +164,7 @@ app.patch('/update/:id', (req, res, next) => {
 			});
 		}
 
-		services.updateServices(db, req.body, req.params.id, function (data) {
+		services.updateServices(req.body, req.params.id, function (data) {
 			res.status(201).json({
 				status: 201,
 				statusText: 'Accepted',
@@ -178,7 +176,7 @@ app.patch('/update/:id', (req, res, next) => {
 });
 
 app.delete('/deleted/:id', (req, res, next) => {
-	services.getByID(db, req.params.id, function (data) {
+	services.getByID(req.params.id, function (data) {
 		if (!data) {
 			res.status(404).send({
 				status: 404,
@@ -191,7 +189,7 @@ app.delete('/deleted/:id', (req, res, next) => {
 			});
 		}
 
-		services.deleteEachServices(db, req.params.id, function (data) {
+		services.deleteEachServices(req.params.id, function (data) {
 			res.status(200).json({
 				status: 200,
 				statusText: 'Accepted',
@@ -203,7 +201,7 @@ app.delete('/deleted/:id', (req, res, next) => {
 });
 
 app.delete('/deletedAll', (req, res, next) => {
-	services.deleteAllServices(db, function (data) {
+	services.deleteAllServices(function (data) {
 		res.status(200).json({
 			status: 200,
 			statusText: 'Accepted',

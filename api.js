@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 export const services = {
-	get: function (db, resolve, reject) {
+	get: function (resolve, reject) {
 		try {
 			let rawdata = fs.readFileSync(path.resolve('db.json'));
 			resolve(JSON.parse(rawdata));
@@ -10,107 +10,101 @@ export const services = {
 			console.log(err);
 		}
 	},
-	getByID: function (db, id, resolve, reject) {
-		fs.readFile(db, function (err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				let getId = JSON.parse(data).find((p) => +p.id === +id);
-				resolve(getId);
-			}
-		});
+	getByID: function (id, resolve, reject) {
+		try {
+			let rawdata = fs.readFileSync(path.resolve('db.json'));
+
+			let getId = JSON.parse(rawdata).find((p) => +p.id === +id);
+			console.log(getId);
+			resolve(getId);
+		} catch (err) {
+			console.log(err);
+		}
 	},
-	createServices: function (db, newData, resolve, reject) {
-		fs.readFile(db, function (err, data) {
-			if (err) {
-				console.log(err);
-			}
+	createServices: function (newData, resolve, reject) {
+		try {
+			let rawdata = fs.readFileSync(path.resolve('db.json'));
 
-			let result = JSON.parse(data);
-
+			let result = JSON.parse(rawdata);
 			result.push(newData);
 
-			fs.writeFile(db, JSON.stringify(result), function (err) {
-				if (err) {
-					console.log(err);
-				}
-				resolve(newData);
-			});
-		});
+			fs.writeFileSync(path.resolve('db.json'), JSON.stringify(result));
+			resolve(newData);
+		} catch (err) {
+			console.log(err);
+		}
 	},
 
-	updateServices: function (db, updateData, id, resolve, reject) {
-		fs.readFile(db, function (err, data) {
-			if (err) {
-				console.log(err);
-			}
+	updateServices: function (updateData, id, resolve, reject) {
+		try {
+			let rawdata = fs.readFileSync(path.resolve('db.json'));
 
-			let res = JSON.parse(data);
-			let resbyId = res.find((rec) => +rec.id === +id);
+			let result = JSON.parse(rawdata);
+
+			let resbyId = result.find((rec) => +rec.id === +id);
 
 			if (resbyId) {
 				Object.assign(resbyId, updateData);
-				fs.writeFile(db, JSON.stringify(res), function (err) {
-					resolve(updateData);
-				});
+				fs.writeFileSync(path.resolve('db.json'), JSON.stringify(result));
+				resolve(updateData);
 			}
-		});
+		} catch (err) {
+			console.log(err);
+		}
 	},
-	deleteEachServices: function (db, id, resolve, reject) {
-		fs.readFile(db, function (err, data) {
-			if (err) {
-				console.log(err);
-			}
+	deleteEachServices: function (id, resolve, reject) {
+		try {
+			let rawdata = fs.readFileSync(path.resolve('db.json'));
 
-			let result = JSON.parse(data);
+			let result = JSON.parse(rawdata);
+
 			let resId = result.findIndex((rec) => +rec.id === +id);
 
 			if (resId !== -1) {
 				result.splice(resId, 1);
-
-				fs.writeFile(db, JSON.stringify(result), function () {
-					resolve(resId);
-				});
+				fs.writeFileSync(path.resolve('db.json'), JSON.stringify(result));
+				resolve(resId);
 			}
-		});
+		} catch (err) {
+			console.log(err);
+		}
 	},
-	deleteAllServices: function (db, resolve, reject) {
-		fs.readFile(db, function (err, data) {
-			if (err) {
-				console.log(err);
-			}
+	deleteAllServices: function (resolve, reject) {
+		try {
+			let rawdata = fs.readFileSync(path.resolve('db.json'));
 
-			let result = JSON.parse(data);
+			let result = JSON.parse(rawdata);
+
 			let resId = result.filter((rec) => rec);
 
 			if (resId !== -1) {
 				result.splice(resId);
-
-				fs.writeFile(db, JSON.stringify(result), function () {
-					resolve(resId);
-				});
+				fs.writeFileSync(path.resolve('db.json'), JSON.stringify(result));
+				resolve(resId);
 			}
-		});
+		} catch (err) {
+			console.log(err);
+		}
 	},
-	filterServicesByQuery: function (db, searchQuery, resolve, reject) {
-		fs.readFile(db, function (err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				let res = JSON.parse(data);
-				// Perform search
-				if (searchQuery) {
-					res = res.filter(
-						(p) =>
-							(searchQuery.id ? +p.id === +searchQuery.id : true) &&
-							(searchQuery.name
-								? p.name.toLowerCase().indexOf(searchQuery.name) >= 0
-								: true)
-					);
-				}
+	filterServicesByQuery: function (searchQuery, resolve, reject) {
+		try {
+			let rawdata = fs.readFileSync(path.resolve('db.json'));
 
-				resolve(res);
+			let res = JSON.parse(rawdata);
+			// Perform search
+			if (searchQuery) {
+				res = res.filter(
+					(p) =>
+						(searchQuery.id ? +p.id === +searchQuery.id : true) &&
+						(searchQuery.name
+							? p.name.toLowerCase().indexOf(searchQuery.name) >= 0
+							: true)
+				);
 			}
-		});
+
+			resolve(res);
+		} catch (err) {
+			console.log(err);
+		}
 	},
 };
