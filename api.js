@@ -1,5 +1,7 @@
 let fs = require('fs');
 
+// Read users.json file
+
 module.exports = {
 	get: function (db, resolve, reject) {
 		fs.readFile(db, (err, data) => {

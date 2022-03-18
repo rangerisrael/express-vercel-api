@@ -1,4 +1,7 @@
+let fs = require('fs');
+
 const express = require('express');
+
 const {
 	get,
 	getByID,
@@ -10,9 +13,13 @@ const {
 } = require('./api');
 const router = express.Router();
 
-const db = 'db.json';
+router.get('/', (req, res) => {
+	res.send({ message: 'Hello world' });
+});
 
-router.get('/', (req, res, next) => {
+const db = './api/db.json';
+
+router.get('/services', (req, res, next) => {
 	get(db, function (data) {
 		res.status(200).json({
 			status: 200,
