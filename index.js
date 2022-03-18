@@ -1,7 +1,6 @@
 import express from 'express';
 import { services } from './api.js';
 
-const db = 'db.json';
 const app = express();
 
 app.use(express.json({ extended: false }));
@@ -13,8 +12,10 @@ app.get('/', (req, res) => {
 	res.send({ message: 'Hello world' });
 });
 
+const db = '';
+
 app.get('/services', (req, res, next) => {
-	services.get(db, function (data) {
+	services.get('db.json', function (data) {
 		res.status(200).json({
 			status: 200,
 			statusText: 'OK',
