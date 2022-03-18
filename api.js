@@ -1,8 +1,6 @@
-let fs = require('fs');
+import fs from 'fs';
 
-// Read users.json file
-
-module.exports = {
+export const services = {
 	get: function (db, resolve, reject) {
 		fs.readFile(db, (err, data) => {
 			if (err) {

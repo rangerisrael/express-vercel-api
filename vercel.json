@@ -11,5 +11,10 @@
 			"src": "/(.*)",
 			"dest": "/"
 		}
-	]
+	],
+	"functions": {
+		"db.json": {
+			"includeFiles": "api/**"
+		}
+	}
 }
