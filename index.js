@@ -1,14 +1,13 @@
 import express from 'express';
 import { services } from './api.js';
 
+const db = 'db.json';
 const app = express();
 
 app.use(express.json({ extended: false }));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));
-
-const db = './api/db.json';
 
 app.get('/', (req, res) => {
 	res.send({ message: 'Hello world' });
