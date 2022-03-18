@@ -10,11 +10,8 @@ const {
 	filterServicesByQuery,
 } = require('api-localdb-latest');
 
-/**
- * GET product list.
- *
+const db = './db.json';
 
- */
 router.get('/', async (req, res) => {
 	try {
 		res.json({
@@ -26,12 +23,6 @@ router.get('/', async (req, res) => {
 		return res.status(500).send('Server error');
 	}
 });
-
-router.get('/', (req, res) => {
-	res.send({ message: 'Hello world' });
-});
-
-const db = './db.json';
 
 router.get('/services', (req, res, next) => {
 	get(db, function (data) {
