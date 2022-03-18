@@ -21,6 +21,7 @@
 	},
 	"homepage": "https://github.com/rangerisrael/express-vercel-api",
 	"dependencies": {
-		"express": "^4.17.1"
+		"express": "^4.17.1",
+		"api-localdb-latest": "1.0.1"
 	}
 }
