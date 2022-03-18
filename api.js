@@ -1,13 +1,14 @@
 import fs from 'fs';
+import path from 'path';
 
 export const services = {
 	get: function (db, resolve, reject) {
-		fs.readFile(db, (err, data) => {
-			if (err) {
-				console.log(err);
-			}
-			resolve(JSON.parse(data));
-		});
+		try {
+			let rawdata = fs.readFileSync(path.resolve('db.json'));
+			resolve(JSON.parse(rawdata));
+		} catch (err) {
+			console.log(err);
+		}
 	},
 	getByID: function (db, id, resolve, reject) {
 		fs.readFile(db, function (err, data) {

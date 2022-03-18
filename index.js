@@ -1,9 +1,7 @@
 import express from 'express';
 import { services } from './api.js';
 
-// const db = 'db.json';
-const db = 'https://rangerisrael.github.io/json-server/db.json';
-
+const db = 'db.json';
 const app = express();
 
 app.use(express.json({ extended: false }));
