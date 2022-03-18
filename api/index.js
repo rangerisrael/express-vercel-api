@@ -3,11 +3,11 @@ const router = express.Router();
 const {
 	get,
 	getByID,
-	createServices,
-	updateServices,
-	deleteAllServices,
-	deleteEachServices,
-	filterServicesByQuery,
+	create,
+	update,
+	deleteAll,
+	deleteEach,
+	filterByQuery,
 } = require('api-localdb-latest');
 
 const db = './db.json';
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 	}
 });
 
-router.get('/services', (req, res, next) => {
+router.get('/', (req, res, next) => {
 	get(db, function (data) {
 		res.status(200).json({
 			status: 200,
@@ -35,13 +35,13 @@ router.get('/services', (req, res, next) => {
 	});
 });
 
-router.get('/services/filter', (req, res, next) => {
+router.get('/filter', (req, res, next) => {
 	let searchObject = {
 		id: req.query.id,
 		name: req.query.name,
 	};
 
-	filterServicesByQuery(db, searchObject, function (data) {
+	filterByQuery(db, searchObject, function (data) {
 		res.status(200).json({
 			status: 200,
 			statusText: 'OK',
@@ -51,7 +51,7 @@ router.get('/services/filter', (req, res, next) => {
 	});
 });
 
-router.get('/services/:id', (req, res, next) => {
+router.get('/:id', (req, res, next) => {
 	getByID(db, req.params.id, function (data) {
 		if (!data) {
 			res.status(404).send({
@@ -73,7 +73,7 @@ router.get('/services/:id', (req, res, next) => {
 	});
 });
 
-router.post('/services/create', (req, res, next) => {
+router.post('/create', (req, res, next) => {
 	get(db, function (data) {
 		let _record = data.filter((d) => d.id);
 		req.body.id = _record.length + 1;
@@ -92,7 +92,7 @@ router.post('/services/create', (req, res, next) => {
 			});
 		}
 
-		createServices(
+		create(
 			db,
 			req.body,
 			function (data) {
@@ -110,7 +110,7 @@ router.post('/services/create', (req, res, next) => {
 	});
 });
 
-router.put('/services/update/:id', (req, res, next) => {
+router.put('/update/:id', (req, res, next) => {
 	getByID(db, req.params.id, function (data) {
 		if (!data) {
 			res.status(404).send({
@@ -138,7 +138,7 @@ router.put('/services/update/:id', (req, res, next) => {
 			});
 		}
 
-		updateServices(db, req.body, req.params.id, function (data) {
+		update(db, req.body, req.params.id, function (data) {
 			res.status(201).json({
 				status: 201,
 				statusText: 'Accepted',
@@ -149,7 +149,7 @@ router.put('/services/update/:id', (req, res, next) => {
 	});
 });
 
-router.patch('/services/update/:id', (req, res, next) => {
+router.patch('/update/:id', (req, res, next) => {
 	getByID(db, req.params.id, function (data) {
 		if (!data) {
 			res.status(404).send({
@@ -177,7 +177,7 @@ router.patch('/services/update/:id', (req, res, next) => {
 			});
 		}
 
-		updateServices(db, req.body, req.params.id, function (data) {
+		update(db, req.body, req.params.id, function (data) {
 			res.status(201).json({
 				status: 201,
 				statusText: 'Accepted',
@@ -188,7 +188,7 @@ router.patch('/services/update/:id', (req, res, next) => {
 	});
 });
 
-router.delete('/services/deleted/:id', (req, res, next) => {
+router.delete('/deleted/:id', (req, res, next) => {
 	getByID(db, req.params.id, function (data) {
 		if (!data) {
 			res.status(404).send({
@@ -202,7 +202,7 @@ router.delete('/services/deleted/:id', (req, res, next) => {
 			});
 		}
 
-		deleteEachServices(db, req.params.id, function (data) {
+		deleteEach(db, req.params.id, function (data) {
 			res.status(200).json({
 				status: 200,
 				statusText: 'Accepted',
@@ -213,8 +213,8 @@ router.delete('/services/deleted/:id', (req, res, next) => {
 	});
 });
 
-router.delete('/services/deletedAll', (req, res, next) => {
-	deleteAllServices(db, function (data) {
+router.delete('/deletedAll', (req, res, next) => {
+	deleteAll(db, function (data) {
 		res.status(200).json({
 			status: 200,
 			statusText: 'Accepted',
