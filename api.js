@@ -1,30 +1,28 @@
-import fs from 'fs';
+let fs = require('fs');
 
-const db = './db.json';
-
-export const services = {
-	get: function (resolve, reject) {
+module.exports = {
+	get: function (db, resolve, reject) {
 		fs.readFile(db, (err, data) => {
 			if (err) {
-				reject(err);
+				console.log(err);
 			}
 			resolve(JSON.parse(data));
 		});
 	},
-	getByID: function (id, resolve, reject) {
+	getByID: function (db, id, resolve, reject) {
 		fs.readFile(db, function (err, data) {
 			if (err) {
-				reject(err);
+				console.log(err);
 			} else {
 				let getId = JSON.parse(data).find((p) => +p.id === +id);
 				resolve(getId);
 			}
 		});
 	},
-	createServices: function (newData, resolve, reject) {
+	createServices: function (db, newData, resolve, reject) {
 		fs.readFile(db, function (err, data) {
 			if (err) {
-				reject(err);
+				console.log(err);
 			}
 
 			let result = JSON.parse(data);
@@ -33,17 +31,17 @@ export const services = {
 
 			fs.writeFile(db, JSON.stringify(result), function (err) {
 				if (err) {
-					reject(err);
+					console.log(err);
 				}
 				resolve(newData);
 			});
 		});
 	},
 
-	updateServices: function (updateData, id, resolve, reject) {
+	updateServices: function (db, updateData, id, resolve, reject) {
 		fs.readFile(db, function (err, data) {
 			if (err) {
-				reject(err);
+				console.log(err);
 			}
 
 			let res = JSON.parse(data);
@@ -57,10 +55,10 @@ export const services = {
 			}
 		});
 	},
-	deleteEachServices: function (id, resolve, reject) {
+	deleteEachServices: function (db, id, resolve, reject) {
 		fs.readFile(db, function (err, data) {
 			if (err) {
-				reject(err);
+				console.log(err);
 			}
 
 			let result = JSON.parse(data);
@@ -75,10 +73,10 @@ export const services = {
 			}
 		});
 	},
-	deleteAllServices: function (resolve, reject) {
+	deleteAllServices: function (db, resolve, reject) {
 		fs.readFile(db, function (err, data) {
 			if (err) {
-				reject(err);
+				console.log(err);
 			}
 
 			let result = JSON.parse(data);
@@ -93,10 +91,10 @@ export const services = {
 			}
 		});
 	},
-	filterServicesByQuery: function (searchQuery, resolve, reject) {
+	filterServicesByQuery: function (db, searchQuery, resolve, reject) {
 		fs.readFile(db, function (err, data) {
 			if (err) {
-				reject(err);
+				console.log(err);
 			} else {
 				let res = JSON.parse(data);
 				// Perform search
